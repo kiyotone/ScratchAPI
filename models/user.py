@@ -3,8 +3,8 @@ from .base import BaseModel
 class User(BaseModel):
     table_name = "users"
     fields = {
-        "id": int,
-        "name": str,
-        "email": str,
-        "role": str
+        "id": {"type": int},
+        "name": {"type": str, "required": True},
+        "email": {"type": str, "required": True, "unique": True},
+        "role": {"type": str, "required": True, "validator": lambda v: v in ["Admin", "Member"]}
     }

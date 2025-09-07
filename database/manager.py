@@ -12,6 +12,11 @@ class DatabaseManager:
     def create_table(self, table_name: str, fields: dict) -> None:
         fields_sql = []
         for field, field_type in fields.items():
+            if field == "id":
+                fields_sql.append(f"{field} INTEGER PRIMARY KEY AUTOINCREMENT")
+                continue
+
+            # map Python types to SQLite types
             if field_type == int:
                 sql_type = "INTEGER"
             elif field_type == float:
@@ -19,10 +24,7 @@ class DatabaseManager:
             else:
                 sql_type = "TEXT"
 
-            if field == "id":
-                fields_sql.append(f"{field} {sql_type} PRIMARY KEY AUTOINCREMENT")
-            else:
-                fields_sql.append(f"{field} {sql_type}")
+            fields_sql.append(f"{field} {sql_type}")
 
         fields_clause = ", ".join(fields_sql)
         self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} ({fields_clause})")

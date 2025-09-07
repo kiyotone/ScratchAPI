@@ -38,7 +38,7 @@ def routes(method, path, query_params=None, body=None):
             return HttpResponse.build(400, {"error": "Invalid user ID"})
         success = UserController.delete_user(user_id)
         if success:
-            return HttpResponse.build(204, None)
+            return HttpResponse.build(204, {"success": True})
         else:
             return HttpResponse.build(404, {"error": "User not found"})
 
